@@ -42,6 +42,7 @@ dependencies:
   http: ^1.2.1
   bloc: ^8.1.4
   file_picker: ^8.0.3
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,9 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -92,6 +96,13 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: SFPro
+      fonts:
+        - asset: assets/fonts/sfprodisplay/SFPRODISPLAYREGULAR.otf
+    - family: SFUi
+      fonts:
+        - asset: assets/fonts/sfuitext/SFUIText-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
