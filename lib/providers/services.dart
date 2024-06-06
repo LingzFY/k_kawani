@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:k_kawani/data/models/category_list_model.dart';
 import 'package:k_kawani/data/models/payment_method_list_model.dart';
@@ -137,6 +138,19 @@ class PosService {
     }
   }
 
+  Future<TransactionOrderModel> getOrder(String idTransaction) async {
+    final prefs = await SharedPreferences.getInstance();
+    final response = await _httpClient.get(
+      getUrl(url: 'api/v$version/order/detail/$idTransaction'),
+      headers: getHeaders(prefs.getString('Token')!),
+    );
+    if (response.statusCode == 200) {
+      return TransactionOrderModel.fromJsonDetail(response.body);
+    } else {
+      return TransactionOrderModel.fromJsonDetail(response.body);
+    }
+  }
+
   Future<int> postHoldOrder(TransactionOrderModel transactionOrder) async {
     final prefs = await SharedPreferences.getInstance();
     final response = await _httpClient.post(
@@ -173,7 +187,7 @@ class PosService {
       headers: getHeaders(prefs.getString('Token')!),
       body: transactionOrder.toJson(),
     );
-    // debugPrint(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.statusCode;
     } else {

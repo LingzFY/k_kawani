@@ -48,7 +48,7 @@ class TransactionOrderListModel {
     return TransactionOrderListModel(
       Count: map['Count'] != null ? map['Count'] as int : null,
       Filtered: map['Filtered'] != null ? map['Filtered'] as int : null,
-      Items: List<TransactionOrderModel>.from((map['List'] as List).map<TransactionOrderModel>((x) => TransactionOrderModel.fromMap(x as Map<String,dynamic>),),),
+      Items: List<TransactionOrderModel>.from((map['List'] as List).map<TransactionOrderModel>((x) => TransactionOrderModel.fromMapList(x as Map<String,dynamic>),),),
       Code: map['Code'] != null ? map['Code'] as int : null,
       Successed: map['Successed'] != null ? map['Successed'] as bool : null,
       Message: map['Message'] != null ? map['Message'] as String : null,

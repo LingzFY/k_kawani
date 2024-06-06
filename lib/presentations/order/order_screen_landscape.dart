@@ -16,12 +16,21 @@ class OrderScreenLandscape extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<TransactionBloc, TransactionState>(
       listener: (context, state) {
-        // debugPrint(state.toString());
+        debugPrint(state.toString());
         if (state.status.isOk) {
+          debugPrint(state.transactionOrder.toJson());
           Navigator.pop(context);
         } else if (state.status.isLoading) {
           showAlertDialog(context, Icons.timer_outlined, Colors.blue, 'Loading',
               'Getting transaction id...', []);
+        } else if (state.status.isSelected) {
+          Navigator.pop(context);
+          context.read<TransactionBloc>().add(
+                GetOrder(
+                  idTransaction: state.transactionOrder.Id!,
+                ),
+              );
+          debugPrint(state.transactionOrder.toJson());
         } else if (state.status.isHold) {
           Navigator.pop(context);
           showAlertDialog(

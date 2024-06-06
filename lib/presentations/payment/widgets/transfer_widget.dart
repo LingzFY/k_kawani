@@ -133,7 +133,6 @@ class _TransferWidgetState extends State<TransferWidget> {
               // This is called when the user selects an item.
               setState(() {
                 paymentMethodValue = value!;
-                debugPrint(value.toJson());
               });
               context.read<PaymentBloc>().add(
                     SetPayment(

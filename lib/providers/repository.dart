@@ -27,6 +27,7 @@ class PosRepository {
   // Transaction
   Future<TransactionIdModel> getTransactionId() => service.getTransactionId();
   Future<TransactionOrderListModel> getOrderList(String status) => service.getOrderList(status);
+  Future<TransactionOrderModel> getOrder(String idTransaction) => service.getOrder(idTransaction);
   Future<int> postHoldOrder(TransactionOrderModel transactionOrder) => service.postHoldOrder(transactionOrder);
 
   // Payment

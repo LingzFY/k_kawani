@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:k_kawani/data/bloc/order_bloc/transaction_bloc.dart';
 import 'package:k_kawani/helpers/show_alert_dialog.dart';
+import 'package:k_kawani/presentations/hold_order/hold_order_screen_landscape.dart';
 import 'package:k_kawani/theme/app_fonts.dart';
 
 class HeaderWidgetLandscape extends StatelessWidget {
@@ -17,7 +18,18 @@ class HeaderWidgetLandscape extends StatelessWidget {
           SizedBox(
             height: 40.0,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const HoldOrderScreenLandscape(),
+                ).then((value) {
+                  (value != '')
+                      ? context.read<TransactionBloc>().add(GetOrder(
+                            idTransaction: value,
+                          ))
+                      : null;
+                });
+              },
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: Colors.white,
@@ -26,10 +38,6 @@ class HeaderWidgetLandscape extends StatelessWidget {
                 CupertinoIcons.cart,
                 color: Colors.grey,
               ),
-              // label: Text(
-              //   'Order',
-              //   style: AppTextStylesBlue.button,
-              // ),
             ),
           ),
           const SizedBox(width: 24.0),
@@ -44,7 +52,8 @@ class HeaderWidgetLandscape extends StatelessWidget {
                       state.status.isAdd ||
                       state.status.isIncrease ||
                       state.status.isDecrease ||
-                      state.status.isAddNote)
+                      state.status.isAddNote||
+                      state.status.isSelected)
                   ? Text(
                       'Transaction ID: #${state.transactionOrder.TrxNo}',
                       style: AppTextStylesBlack.body2,

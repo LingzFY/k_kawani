@@ -23,6 +23,7 @@ class TransactionOrderModel {
   String? PaymentRefference; // For transaction
   TransactionFileModel? PaymentFile; // For transaction
   List<TransactionItemModel> Items; // For transaction & order detail
+  double? Code;
 
   TransactionOrderModel({
     this.Id,
@@ -37,12 +38,13 @@ class TransactionOrderModel {
     this.UpdateBy,
     this.UpdateDate,
     this.IdTransaction,
+    this.DineOption,
     this.TotalPayment,
     this.PaymentMethodId,
     this.PaymentRefference,
     this.PaymentFile,
-    this.DineOption,
     required this.Items,
+    this.Code,
   });
 
   static final empty = TransactionOrderModel(
@@ -64,6 +66,7 @@ class TransactionOrderModel {
     PaymentRefference: '',
     PaymentFile: TransactionFileModel.empty,
     Items: [],
+    Code: 0,
   );
 
   Map<String, dynamic> toMap() {
@@ -80,59 +83,71 @@ class TransactionOrderModel {
       'UpdateBy': UpdateBy,
       'UpdateDate': UpdateDate,
       'IdTransaction': IdTransaction,
+      'DineOption': DineOption,
       'TotalPayment': TotalPayment,
       'PaymentMethodId': PaymentMethodId,
       'PaymentRefference': PaymentRefference,
       'PaymentFile': PaymentFile?.toMap(),
-      'DineOption': DineOption,
       'Items': Items.map((x) => x.toMap()).toList(),
+      'Code': Code,
     };
   }
 
-  factory TransactionOrderModel.fromMap(Map<String, dynamic> map) {
+  factory TransactionOrderModel.fromMapList(Map<String, dynamic> map) {
     return TransactionOrderModel(
       Id: map['Id'] != null ? map['Id'] as String : null,
       TrxNo: map['TrxNo'] != null ? map['TrxNo'] as String : null,
-      Description:
-          map['Description'] != null ? map['Description'] as String : null,
+      Description: map['Description'] != null ? map['Description'] as String : null,
       SubTotal: map['SubTotal'] != null ? map['SubTotal'] as double : null,
       Tax: map['Tax'] != null ? map['Tax'] as double : null,
-      TotalPrice:
-          map['TotalPrice'] != null ? map['TotalPrice'] as double : null,
+      TotalPrice: map['TotalPrice'] != null ? map['TotalPrice'] as double : null,
       Status: map['Status'] != null ? map['Status'] as String : null,
       CreateBy: map['CreateBy'] != null ? map['CreateBy'] as String : null,
-      CreateDate:
-          map['CreateDate'] != null ? map['CreateDate'] as String : null,
+      CreateDate: map['CreateDate'] != null ? map['CreateDate'] as String : null,
       UpdateBy: map['UpdateBy'] != null ? map['UpdateBy'] as String : null,
-      UpdateDate:
-          map['UpdateDate'] != null ? map['UpdateDate'] as String : null,
-      IdTransaction:
-          map['IdTransaction'] != null ? map['IdTransaction'] as String : null,
-      TotalPayment:
-          map['TotalPayment'] != null ? map['TotalPayment'] as double : null,
-      PaymentMethodId: map['PaymentMethodId'] != null
-          ? map['PaymentMethodId'] as double
-          : null,
-      PaymentRefference: map['PaymentRefference'] != null
-          ? map['PaymentRefference'] as String
-          : null,
-      PaymentFile: map['PaymentFile'] != null
-          ? TransactionFileModel.fromMap(
-              map['PaymentFile'] as Map<String, dynamic>)
-          : null,
-      DineOption:
-          map['DineOption'] != null ? map['DineOption'] as double : null,
-      Items: List<TransactionItemModel>.from(
-        (map['Items'] as List<int>).map<TransactionItemModel>(
-          (x) => TransactionItemModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      UpdateDate: map['UpdateDate'] != null ? map['UpdateDate'] as String : null,
+      IdTransaction: map['Id'] != null ? map['Id'] as String : null,
+      DineOption: map['DineOption'] != null ? (map['DineOption'] == 'DINE_IN' ? 0 : 1) as double : null,
+      TotalPayment: map['TotalPayment'] != null ? map['TotalPayment'] as double : null,
+      PaymentMethodId: map['PaymentMethodId'] != null ? map['PaymentMethodId'] as double : null,
+      PaymentRefference: map['PaymentRefference'] != null ? map['PaymentRefference'] as String : null,
+      PaymentFile: map['PaymentFile'] != null ? TransactionFileModel.fromMap(map['PaymentFile'] as Map<String,dynamic>) : null,
+      Items: [],
+      Code: map['Code'] != null ? map['Code'] as double : null,
+    );
+  }
+
+  factory TransactionOrderModel.fromMapDetail(Map<String, dynamic> map) {
+    return TransactionOrderModel(
+      Id: map['Data']['Id'] != null ? map['Data']['Id'] as String : null,
+      TrxNo: map['Data']['TrxNo'] != null ? map['Data']['TrxNo'] as String : null,
+      Description: map['Data']['Description'] != null ? map['Data']['Description'] as String : null,
+      SubTotal: map['Data']['SubTotal'] != null ? map['Data']['SubTotal'] as double : null,
+      Tax: map['Data']['Tax'] != null ? map['Data']['Tax'] as double : null,
+      TotalPrice: map['Data']['TotalPrice'] != null ? map['Data']['TotalPrice'] as double : null,
+      Status: map['Data']['Status'] != null ? map['Data']['Status'] as String : null,
+      CreateBy: map['Data']['CreateBy'] != null ? map['Data']['CreateBy'] as String : null,
+      CreateDate: map['Data']['CreateDate'] != null ? map['Data']['CreateDate'] as String : null,
+      UpdateBy: map['Data']['UpdateBy'] != null ? map['Data']['UpdateBy'] as String : null,
+      UpdateDate: map['Data']['UpdateDate'] != null ? map['Data']['UpdateDate'] as String : null,
+      IdTransaction: map['Data']['Id'] != null ? map['Data']['Id'] as String : null,
+      DineOption: map['Data']['DineOption'] != null ? (map['Data']['DineOption'] == 'DINE_IN' ? 0 : 1) as double : null,
+      TotalPayment: map['Data']['TotalPayment'] != null ? map['Data']['TotalPayment'] as double : null,
+      PaymentMethodId: map['Data']['PaymentMethodId'] != null ? map['Data']['PaymentMethodId'] as double : null,
+      PaymentRefference: map['Data']['PaymentRefference'] != null ? map['Data']['PaymentRefference'] as String : null,
+      PaymentFile: map['Data']['PaymentFile'] != null ? TransactionFileModel.fromMap(map['Data']['PaymentFile'] as Map<String,dynamic>) : null,
+      Items: List<TransactionItemModel>.from((map['Data']['Items'] as List).map<TransactionItemModel>((x) => TransactionItemModel.fromMap(x as Map<String,dynamic>),),),
+      Code: map['Code'] != null ? map['Code'] as double : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TransactionOrderModel.fromJson(String source) =>
-      TransactionOrderModel.fromMap(
+  factory TransactionOrderModel.fromJsonList(String source) =>
+      TransactionOrderModel.fromMapList(
+          json.decode(source) as Map<String, dynamic>);
+  
+  factory TransactionOrderModel.fromJsonDetail(String source) =>
+      TransactionOrderModel.fromMapDetail(
           json.decode(source) as Map<String, dynamic>);
 }

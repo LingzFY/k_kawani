@@ -8,6 +8,7 @@ class TransactionItemModel {
   final String? Id;
   double? Qty;
   String? Notes;
+  double? Price;
   String? Description;
   final ProductModel? Product;
 
@@ -16,6 +17,7 @@ class TransactionItemModel {
     this.Id,
     this.Qty,
     this.Notes,
+    this.Price,
     this.Description,
     this.Product,
   });
@@ -28,6 +30,7 @@ class TransactionItemModel {
       'Id': Id,
       'Qty': Qty,
       'Notes': Notes,
+      'Price': Price,
       'Description': Description,
       'Product': Product?.toMap(),
     };
@@ -35,14 +38,13 @@ class TransactionItemModel {
 
   factory TransactionItemModel.fromMap(Map<String, dynamic> map) {
     return TransactionItemModel(
-      idItem: map['Id'] != null ? map['Id'] as String : null,
-      Id: map['Id'] != null ? map['Id'] as String : null,
+      idItem: map['Product']['Id'] != null ? map['Product']['Id'] as String : null,
+      Id: map['Product']['Id'] != null ? map['Product']['Id'] as String : null,
       Qty: map['Qty'] != null ? map['Qty'] as double : null,
-      Notes: map['Notes'] != null ? map['Notes'] as String : null,
-      Description: map['Notes'] != null ? map['Notes'] as String : null,
-      Product: map['Product'] != null
-          ? ProductModel.fromMap(map['Product'] as Map<String, dynamic>)
-          : null,
+      Notes: map['Description'] != null ? map['Description'] as String : null,
+      Price: map['Price'] != null ? map['Price'] as double : null,
+      Description: map['Description'] != null ? map['Description'] as String : null,
+      Product: map['Product'] != null ? ProductModel.fromMap(map['Product'] as Map<String,dynamic>) : null,
     );
   }
 

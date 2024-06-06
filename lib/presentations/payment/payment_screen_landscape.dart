@@ -41,8 +41,8 @@ class _PaymentScreenLandscapeState extends State<PaymentScreenLandscape> {
         TextButton(
           child: const Text('Ok'),
           onPressed: () {
-            debugPrint(state.transactionOrder.toJson());
             Navigator.pop(context);
+            debugPrint(state.transactionOrder.toJson());
             context.read<PaymentBloc>().add(
                   PostPayment(
                     transactionOrder: state.transactionOrder,
@@ -93,6 +93,7 @@ class _PaymentScreenLandscapeState extends State<PaymentScreenLandscape> {
                 child: BlocConsumer<PaymentBloc, PaymentState>(
                   listener: (context, state) {
                     debugPrint(state.toString());
+                    debugPrint(state.transactionOrder.toString());
                     if (state.status.isOk) {
                       Navigator.pop(context);
                     } else if (state.status.isLoading) {
@@ -172,7 +173,6 @@ class _PaymentScreenLandscapeState extends State<PaymentScreenLandscape> {
                     }
                   },
                   builder: (context, state) {
-                    debugPrint(state.transactionOrder.toJson());
                     return Column(
                       children: [
                         Row(
@@ -363,7 +363,7 @@ class _PaymentScreenLandscapeState extends State<PaymentScreenLandscape> {
                         (paymentMethodName == 'CASH')
                             ? Expanded(
                                 child: CashWidget(
-                                  transactionOrder: state.transactionOrder,
+                                  transactionOrder: widget.transactionOrder,
                                   paymentMethodList: state.paymentMethodList,
                                   paymentMethodName: paymentMethodName,
                                 ),

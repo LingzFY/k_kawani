@@ -73,3 +73,21 @@ class HoldTransaction extends TransactionEvent {
   @override
   List<Object?> get props => [transactionOrder];
 }
+
+class GetOrderList extends TransactionEvent {
+  GetOrderList({
+    required this.parameter,
+  });
+  final String parameter;
+  @override
+  List<Object?> get props => [parameter];
+}
+
+class GetOrder extends TransactionEvent {
+  GetOrder({
+    required this.idTransaction,
+  });
+  final String idTransaction;
+  @override
+  List<Object?> get props => [idTransaction];
+}

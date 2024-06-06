@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:k_kawani/data/models/transaction_id_model.dart';
 import 'package:k_kawani/data/models/transaction_item_model.dart';
+import 'package:k_kawani/data/models/transaction_list_model.dart';
 import 'package:k_kawani/data/models/transaction_model.dart';
 import 'package:k_kawani/providers/repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<DecreaseQty>(_mapDecreaseQtyEventToState);
     on<AddNote>(_mapAddTransactionItemNoteEventToState);
     on<HoldTransaction>(_mapHoldTransactionEventToState);
+    on<GetOrderList>(_mapGetHoldOrderListEventToState);
+    on<GetOrder>(_mapGetHoldOrderEventToState);
   }
 
   final PosRepository posRepository;
@@ -216,6 +220,116 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           transactionOrder: transactionOrder,
           notes: transactionOrder.Items[event.targetIndex].Notes),
     );
+  }
+
+  void _mapGetHoldOrderListEventToState(
+      GetOrderList event, Emitter<TransactionState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      emit(state.copyWith(status: TransactionStatus.loading));
+      TransactionOrderListModel transactionOrderList = await posRepository.getOrderList(event.parameter);
+      switch (transactionOrderList.Code) {
+        case 200:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.ok,
+              transactionOrderList: transactionOrderList,
+            ),
+          );
+          break;
+        case 400:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.badRequest,
+              transactionOrderList: transactionOrderList,
+            ),
+          );
+          break;
+        case 401:
+          prefs.setBool('isActive', false);
+          emit(
+            state.copyWith(
+              status: TransactionStatus.unauthorized,
+              transactionOrderList: transactionOrderList,
+            ),
+          );
+          break;
+        case 403:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.forbidden,
+              transactionOrderList: transactionOrderList,
+            ),
+          );
+          break;
+        case 404:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.notFound,
+              transactionOrderList: transactionOrderList,
+            ),
+          );
+          break;
+        default:
+      }
+    } catch (error) {
+      emit(state.copyWith(status: TransactionStatus.error));
+    }
+  }
+
+  void _mapGetHoldOrderEventToState(
+      GetOrder event, Emitter<TransactionState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      emit(state.copyWith(status: TransactionStatus.loading));
+      TransactionOrderModel transactionOrder = await posRepository.getOrder(event.idTransaction);
+      switch (transactionOrder.Code) {
+        case 200:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.ok,
+              transactionOrder: transactionOrder,
+            ),
+          );
+          break;
+        case 400:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.badRequest,
+              transactionOrder: transactionOrder,
+            ),
+          );
+          break;
+        case 401:
+          prefs.setBool('isActive', false);
+          emit(
+            state.copyWith(
+              status: TransactionStatus.unauthorized,
+              transactionOrder: transactionOrder,
+            ),
+          );
+          break;
+        case 403:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.forbidden,
+              transactionOrder: transactionOrder,
+            ),
+          );
+          break;
+        case 404:
+          emit(
+            state.copyWith(
+              status: TransactionStatus.notFound,
+              transactionOrder: transactionOrder,
+            ),
+          );
+          break;
+        default:
+      }
+    } catch (error) {
+      emit(state.copyWith(status: TransactionStatus.error));
+    }
   }
 
   void _mapHoldTransactionEventToState(

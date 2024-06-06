@@ -112,7 +112,6 @@ class _CashWidgetState extends State<CashWidget> {
                     changeController.text =
                         NumberFormat.simpleCurrency(locale: "id-ID")
                             .format(change);
-                    debugPrint(change.toString());
                   } else {
                     changeController.text =
                         NumberFormat.simpleCurrency(locale: "id-ID").format(0);

@@ -68,6 +68,11 @@ class ListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController noteController = TextEditingController();
+    noteController.text =
+        (transactionItem.Notes == null || transactionItem.Notes! == '')
+            ? ''
+            : transactionItem.Notes!;
     return Container(
       color: Colors.white,
       child: Column(
@@ -90,10 +95,13 @@ class ListItemWidget extends StatelessWidget {
                   children: [
                     Text(
                       transactionItem.Product!.Name!,
+                      style: AppTextStylesBlack.subtitle1,
                     ),
                     Text(
-                      NumberFormat.simpleCurrency(locale: "id-ID")
-                          .format(transactionItem.Product?.Price!),
+                      NumberFormat.simpleCurrency(locale: "id-ID").format(
+                          (transactionItem.Product?.Price == null)
+                              ? transactionItem.Price!
+                              : transactionItem.Product?.Price!),
                     ),
                   ],
                 ),
@@ -158,6 +166,7 @@ class ListItemWidget extends StatelessWidget {
                     vertical: 0,
                   ),
                   child: TextField(
+                    controller: noteController,
                     style: AppTextStylesBlack.body2,
                     decoration: InputDecoration(
                       border: InputBorder.none,
